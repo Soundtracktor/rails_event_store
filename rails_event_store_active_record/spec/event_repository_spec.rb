@@ -1,9 +1,20 @@
 require 'spec_helper'
 require 'ruby_event_store'
 require 'ruby_event_store/spec/event_repository_lint'
-require 'rails_event_store_active_record/event'
 
 module RailsEventStoreActiveRecord
+
+  class Event < ::ActiveRecord::Base
+    self.primary_key = :id
+    self.table_name = 'event_store_events'
+  end
+
+  class EventInStream < ::ActiveRecord::Base
+    self.primary_key = :id
+    self.table_name = 'event_store_events_in_streams'
+    belongs_to :event
+  end
+
   RSpec.describe EventRepository do
     include SchemaHelper
 
